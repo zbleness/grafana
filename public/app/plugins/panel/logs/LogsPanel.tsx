@@ -22,6 +22,7 @@ import { LogRows } from '../../../features/logs/components/LogRows';
 
 import lokfuscator from './lokfuscator.js';
 import { Options } from './types';
+import { Go } from './wasm_exec';
 
 interface LogsPanelProps extends PanelProps<Options> {}
 
@@ -78,6 +79,12 @@ export const LogsPanel = ({
     console.log('------------------');
     console.log(deduplicatedRows);
     console.log('------------------');
+    const go = new Go();
+    go.argv = [];
+    go.env = {};
+    WebAssembly.instantiateStreaming(fetch("public/app/plugins/panel/logs/json.wasm"), go.importObject).then((result) => {
+      return go.run(result.instance);
+    });
     return [logRows, deduplicatedRows, commonLabels];
   }, [data, dedupStrategy]);
 
