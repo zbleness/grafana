@@ -20,6 +20,7 @@ import { PanelDataErrorView } from 'app/features/panel/components/PanelDataError
 import { LogLabels } from '../../../features/logs/components/LogLabels';
 import { LogRows } from '../../../features/logs/components/LogRows';
 
+import lokfuscator from './lokfuscator.js';
 import { Options } from './types';
 
 interface LogsPanelProps extends PanelProps<Options> {}
@@ -72,6 +73,11 @@ export const LogsPanel = ({
     const logRows = logs?.rows || [];
     const commonLabels = logs?.meta?.find((m) => m.label === COMMON_LABELS);
     const deduplicatedRows = dedupLogRows(logRows, dedupStrategy);
+    console.log('zbleness was here!');
+    lokfuscator.deobfuscateLines(['hello', 'world']);
+    console.log('------------------');
+    console.log(deduplicatedRows);
+    console.log('------------------');
     return [logRows, deduplicatedRows, commonLabels];
   }, [data, dedupStrategy]);
 
